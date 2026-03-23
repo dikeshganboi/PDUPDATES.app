@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import DOMPurify from 'isomorphic-dompurify';
 import { getBlogBySlug } from '../../../lib/blogApi';
 import { formatDate } from '../../../utils/formatDate';
 import BlogEngagement from '../../../components/blog/BlogEngagement';
+import SafeHtml from '../../../components/blog/SafeHtml';
 import Breadcrumb from '../../../components/ui/Breadcrumb';
 
 export const revalidate = 30;
@@ -141,9 +141,9 @@ export default async function BlogDetailPage({ params }) {
       )}
 
       {/* Article Content */}
-      <div
+      <SafeHtml
+        html={blog.content}
         className="content-html mb-8 rounded-xl bg-white p-6 shadow-[0_0_4px_#cfcfcf] md:p-8 prose prose-lg max-w-none prose-headings:text-[#111827] prose-headings:font-extrabold prose-p:text-[#334155] prose-a:text-[#3858F6] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl"
-        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog.content || '') }}
       />
 
       <div className="mb-8 h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
