@@ -333,12 +333,39 @@
   .content-html ol,
   .tiptap ul,
   .tiptap ol {
-    margin: 0.8rem 0 0.8rem 1.4rem;
+    margin: 0.8rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .content-html ul,
+  .tiptap ul {
+    list-style: disc;
+  }
+
+  .content-html ol,
+  .tiptap ol {
+    list-style: decimal;
+  }
+
+  .content-html ul ul,
+  .tiptap ul ul {
+    list-style: circle;
+  }
+
+  .content-html ul ul ul,
+  .tiptap ul ul ul {
+    list-style: square;
   }
 
   .content-html li,
   .tiptap li {
+    display: list-item;
     margin: 0.4rem 0;
+  }
+
+  .content-html li::marker,
+  .tiptap li::marker {
+    color: var(--color-text);
   }
 
   .content-html a,
