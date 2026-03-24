@@ -96,9 +96,13 @@ export default function ManageBlogsPage() {
               <tr key={blog._id} className="border-t border-gray-100 transition hover:bg-[#F8F8F8]">
                 <td className="px-4 py-3 font-bold text-[#111827]">{blog.title}</td>
                 <td className="px-4 py-3 text-[#7B7F84]">
-                  <span className="inline-flex rounded-md bg-[#3858F6] px-2 py-1 text-xs font-bold text-white">
-                    {blog.category}
-                  </span>
+                  <div className="flex flex-wrap gap-1">
+                    {(Array.isArray(blog.category) ? blog.category : [blog.category].filter(Boolean)).map((cat) => (
+                      <span key={cat} className="inline-flex rounded-md bg-[#3858F6] px-2 py-1 text-xs font-bold text-white">
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
                 </td>
                 <td className="px-4 py-3 text-[#7B7F84]">{formatDate(blog.createdAt)}</td>
                 <td className="px-4 py-3 text-[#7B7F84]">{blog.views || 0}</td>

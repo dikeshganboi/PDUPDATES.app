@@ -1,9 +1,16 @@
 import express from 'express';
 import http from 'http';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Load environment variables from server/.env regardless of cwd
+dotenv.config({ path: path.join(__dirname, '.env') });
 import { Server as SocketIOServer } from 'socket.io';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
@@ -11,9 +18,6 @@ import blogRoutes from './routes/blogRoutes.js';
 import commentRoutes from './routes/commentRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
-
-// Load environment variables
-dotenv.config();
 
 // Connect to MongoDB
 connectDB();

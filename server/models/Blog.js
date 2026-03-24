@@ -21,9 +21,12 @@ const blogSchema = new mongoose.Schema(
       required: [true, 'Content is required'],
     },
     category: {
-      type: String,
-      required: [true, 'Category is required'],
-      trim: true,
+      type: [String],
+      validate: {
+        validator: (v) => Array.isArray(v) && v.length > 0 && v.length <= 3,
+        message: 'Select 1 to 3 categories',
+      },
+      default: [],
     },
     tags: {
       type: [String],

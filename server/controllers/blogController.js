@@ -23,6 +23,20 @@ const normalizeTags = (tags) => {
   return [];
 };
 
+const normalizeCategories = (categories) => {
+  if (!categories) return [];
+  if (Array.isArray(categories)) {
+    return categories
+      .map((cat) => String(cat).trim())
+      .filter(Boolean)
+      .slice(0, 3);
+  }
+  if (typeof categories === 'string') {
+    return [categories.trim()].filter(Boolean);
+  }
+  return [];
+};
+
 const buildUniqueSlug = async (title, ignoreBlogId = null) => {
   const base = slugify(title) || `blog-${Date.now()}`;
   let candidate = base;
@@ -55,7 +69,7 @@ export const createBlog = async (req, res, next) => {
       title,
       slug,
       content: sanitizeHtml(content),
-      category,
+      category: normalizeCategories(category),
       tags: normalizeTags(tags),
       image: image || '',
       author: req.user._id,
@@ -101,7 +115,7 @@ export const getAllBlogs = async (req, res, next) => {
         .sort({ score: { $meta: 'textScore' }, createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .populate('author', 'name email role');
+        .populate('author', 'name email role avatar');
 
       totalCount = await Blog.countDocuments(textFilter);
 
@@ -118,7 +132,7 @@ export const getAllBlogs = async (req, res, next) => {
           .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit)
-          .populate('author', 'name email role');
+          .populate('author', 'name email role avatar');
       }
     } else {
       totalCount = await Blog.countDocuments(filter);
@@ -126,7 +140,7 @@ export const getAllBlogs = async (req, res, next) => {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .populate('author', 'name email role');
+        .populate('author', 'name email role avatar');
     }
 
     const totalPages = Math.max(1, Math.ceil(totalCount / limit));
@@ -134,6 +148,7 @@ export const getAllBlogs = async (req, res, next) => {
     const hasPrevPage = page > 1;
 
     const categoryFacets = await Blog.aggregate([
+      { $unwind: '$category' },
       { $group: { _id: '$category', count: { $sum: 1 } } },
       { $sort: { count: -1, _id: 1 } },
       { $project: { _id: 0, category: '$_id', count: 1 } },
@@ -280,7 +295,7 @@ export const updateBlog = async (req, res, next) => {
     }
 
     if (content !== undefined) blog.content = sanitizeHtml(content);
-    if (category !== undefined) blog.category = category;
+    if (category !== undefined) blog.category = normalizeCategories(category);
     if (tags !== undefined) blog.tags = normalizeTags(tags);
     if (image !== undefined) blog.image = image;
 
@@ -362,6 +377,41 @@ export const deleteBlog = async (req, res, next) => {
     await blog.deleteOne();
 
     res.status(200).json({ message: 'Blog deleted successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getRelatedBlogs = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const limit = Math.min(6, Math.max(1, Number.parseInt(req.query.limit, 10) || 3));
+
+    const blog = await Blog.findOne({ slug }).select('_id category tags');
+    if (!blog) {
+      return res.status(200).json({ blogs: [] });
+    }
+
+    // Find blogs with overlapping categories or shared tags, excluding the current one
+    const orConditions = [
+      ...(blog.category?.length ? [{ category: { $in: blog.category } }] : []),
+      ...(blog.tags?.length ? [{ tags: { $in: blog.tags } }] : []),
+    ];
+
+    if (!orConditions.length) {
+      return res.status(200).json({ blogs: [] });
+    }
+
+    const related = await Blog.find({
+      _id: { $ne: blog._id },
+      $or: orConditions,
+    })
+      .sort({ views: -1, createdAt: -1 })
+      .limit(limit)
+      .select('title slug image category tags createdAt views author')
+      .populate('author', 'name');
+
+    res.status(200).json({ blogs: related });
   } catch (error) {
     next(error);
   }

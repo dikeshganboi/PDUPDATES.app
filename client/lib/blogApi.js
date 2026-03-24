@@ -56,3 +56,11 @@ export const getBlogBySlug = async (slug) => {
     next: { revalidate: 30 },
   });
 };
+
+export const getRelatedBlogs = async (slug, limit = 3) => {
+  return fetchJson(`${API_BASE_URL}/blogs/${slug}/related?limit=${limit}`, {
+    allowFallbackOnNetworkError: true,
+    fallbackData: { blogs: [] },
+    next: { revalidate: 60 },
+  });
+};

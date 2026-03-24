@@ -44,6 +44,7 @@ const BlogExplorer = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const searchBoxRef = useRef(null);
+  const userTypingRef = useRef(false);
   const [pagination, setPagination] = useState({
     page: 1,
     limit: PAGE_SIZE,
@@ -63,6 +64,7 @@ const BlogExplorer = () => {
     if (urlSearch !== debouncedSearch) {
       setSearchInput(urlSearch);
       setDebouncedSearch(urlSearch);
+      userTypingRef.current = false;
     }
     if (urlCategory !== selectedCategory) {
       setSelectedCategory(urlCategory);
@@ -133,7 +135,7 @@ const BlogExplorer = () => {
   }, [debouncedSearch, selectedCategory, page, pathname, router]);
 
   useEffect(() => {
-    if (!searchInput.trim() || searchInput.trim().length < 2) {
+    if (!searchInput.trim() || searchInput.trim().length < 2 || !userTypingRef.current) {
       setSuggestions([]);
       setShowSuggestions(false);
       return;
@@ -275,6 +277,7 @@ const BlogExplorer = () => {
                     type="text"
                     value={searchInput}
                     onChange={(event) => {
+                      userTypingRef.current = true;
                       setSearchInput(event.target.value);
                       setPage(1);
                     }}

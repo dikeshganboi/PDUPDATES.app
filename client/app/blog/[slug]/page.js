@@ -5,6 +5,9 @@ import { formatDate } from '../../../utils/formatDate';
 import BlogEngagement from '../../../components/blog/BlogEngagement';
 import SafeHtml from '../../../components/blog/SafeHtml';
 import Breadcrumb from '../../../components/ui/Breadcrumb';
+import ShareButtons from '../../../components/blog/ShareButtons';
+import ReadingProgressBar from '../../../components/blog/ReadingProgressBar';
+import RelatedPosts from '../../../components/blog/RelatedPosts';
 
 export const revalidate = 30;
 
@@ -89,6 +92,7 @@ export default async function BlogDetailPage({ params }) {
 
   return (
     <article className="container-shell max-w-5xl py-10 md:py-14">
+      <ReadingProgressBar />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -99,9 +103,17 @@ export default async function BlogDetailPage({ params }) {
       {/* Article Header */}
       <header className="mb-8 rounded-xl bg-white p-6 shadow-[0_0_4px_#cfcfcf] md:p-8" style={{ borderBottom: '3px solid #3858F6' }}>
         <div className="flex flex-wrap items-center gap-3">
-          <span className="inline-flex rounded-md bg-[#FF3385] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white">
-            {blog.category}
-          </span>
+          {(Array.isArray(blog.category) ? blog.category : [blog.category].filter(Boolean)).slice(0, 3).map((cat, i) => {
+            const colors = ['bg-[#FF3385]', 'bg-[#3858F6]', 'bg-[#FFAF25]'];
+            return (
+              <span
+                key={cat}
+                className={`inline-flex rounded-md ${colors[i % colors.length]} px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white`}
+              >
+                {cat}
+              </span>
+            );
+          })}
           <span className="text-xs font-bold text-[#7B7F84]">⏱️ {readingTime} min read</span>
         </div>
 
@@ -121,6 +133,11 @@ export default async function BlogDetailPage({ params }) {
           </div>
           <span className="text-gray-300">•</span>
           <span className="text-sm text-[#7B7F84]">👁️ {blog.views || 0} views</span>
+        </div>
+
+        {/* Share Buttons */}
+        <div className="mt-5 border-t border-gray-100 pt-5">
+          <ShareButtons title={blog.title} slug={blog.slug} />
         </div>
       </header>
 
@@ -190,6 +207,9 @@ export default async function BlogDetailPage({ params }) {
           )}
         </section>
       )}
+
+      {/* Related Posts */}
+      <RelatedPosts slug={blog.slug} />
 
       {/* Engagement Section */}
       <BlogEngagement blog={blog} />

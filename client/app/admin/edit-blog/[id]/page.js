@@ -38,7 +38,7 @@ export default function EditBlogPage() {
 
     return {
       title: blog.title || '',
-      category: blog.category || '',
+      category: Array.isArray(blog.category) ? blog.category : blog.category ? [blog.category] : [],
       tags: (blog.tags || []).join(', '),
       image: blog.image || '',
       content: blog.content || '',

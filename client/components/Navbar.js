@@ -137,17 +137,18 @@ const Navbar = () => {
     setSuggestions([]);
     if (!next) {
       router.push('/blog');
-      return;
+    } else {
+      router.push(`/blog?search=${encodeURIComponent(next)}`);
     }
-    router.push(`/blog?search=${encodeURIComponent(next)}`);
+    setSearchText('');
   };
 
   const selectSuggestion = useCallback((item) => {
-    setSearchText(item.value);
     setShowSuggestions(false);
     setSuggestions([]);
     setActiveIndex(-1);
     router.push(`/blog?search=${encodeURIComponent(item.value)}`);
+    setSearchText('');
   }, [router]);
 
   const handleSearchKeyDown = (e) => {
