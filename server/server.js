@@ -105,6 +105,11 @@ app.get('/api/test', (req, res) => {
   });
 });
 
+// Cron job endpoint - minimal response for cron-job.org (keeps server awake)
+app.get('/api/cron', (req, res) => {
+  res.status(200).send('OK');
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({
