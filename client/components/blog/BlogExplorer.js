@@ -264,8 +264,8 @@ const BlogExplorer = () => {
           subtitle="Find posts by topic, keyword, and category with a clean editorial browsing experience."
         />
 
-        <div className="mt-7 grid gap-8 xl:grid-cols-[1fr_320px]">
-          <div>
+        <div className="mt-7 grid gap-8 xl:grid-cols-[1fr_320px]" style={{ minWidth: 0 }}>
+          <div className="min-w-0">
             <div className="rounded-xl bg-white p-4 shadow-[0_0_4px_#cfcfcf] md:p-5">
               <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
                 <div className="relative" ref={searchBoxRef}>
@@ -449,7 +449,7 @@ const BlogExplorer = () => {
             </div>
           </div>
 
-          <div>
+          <div className="hidden xl:block">
             <CategoriesSidebar categories={sidebarCategories} />
           </div>
         </div>

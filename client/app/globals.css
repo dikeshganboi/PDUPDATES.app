@@ -61,6 +61,7 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
@@ -72,6 +73,7 @@
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
     font-size: 15px;
+    overflow-x: hidden;
   }
 }
 
@@ -106,6 +108,8 @@
     max-width: 1140px;
     padding-left: 1rem;
     padding-right: 1rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   @media (min-width: 640px) {
@@ -284,6 +288,12 @@
   }
 
   /* Content / Blog HTML */
+  .content-html,
+  .tiptap {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
   .content-html h1,
   .tiptap h1 {
     font-size: 2rem;

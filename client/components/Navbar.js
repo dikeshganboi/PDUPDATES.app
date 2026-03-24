@@ -382,7 +382,7 @@ const Navbar = () => {
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search…"
                 suppressHydrationWarning
-                className="h-9 w-40 rounded-full bg-[#F8F8F8] pl-8 pr-3 text-xs text-[#111827] outline-none placeholder:text-[#7B7F84]"
+                className="h-9 w-28 sm:w-40 rounded-full bg-[#F8F8F8] pl-8 pr-3 text-xs text-[#111827] outline-none placeholder:text-[#7B7F84]"
               />
               <svg className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#7B7F84]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>

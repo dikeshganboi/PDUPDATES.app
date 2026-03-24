@@ -242,10 +242,10 @@ export default async function Home() {
 
       {/* ── Latest + Sidebar ───────────────────────────── */}
       <section className="container-shell mt-14">
-        <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
+        <div className="grid gap-8 xl:grid-cols-[1fr_340px]" style={{ minWidth: 0 }}>
 
           {/* Latest Articles */}
-          <div>
+          <div className="min-w-0">
             <div className="mb-7 flex items-end justify-between">
               <h2 className="text-2xl font-extrabold text-[#111827] md:text-[28px]">
                 Latest Articles
@@ -260,8 +260,8 @@ export default async function Home() {
             <div className="space-y-5">
               {latestBlogs.length ? (
                 latestBlogs.map((blog, index) => (
-                  <article key={blog._id} className="group flex gap-5 rounded-xl bg-white p-4 shadow-[0_0_4px_#cfcfcf] transition-shadow duration-300 hover:shadow-[0_0_20px_#cfcfcf]">
-                    <div className="relative hidden h-32 w-44 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 sm:block">
+                  <article key={blog._id} className="group flex flex-col sm:flex-row gap-4 sm:gap-5 rounded-xl bg-white p-4 shadow-[0_0_4px_#cfcfcf] transition-shadow duration-300 hover:shadow-[0_0_20px_#cfcfcf]">
+                    <div className="relative h-44 sm:h-32 w-full sm:w-44 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
                       <Image
                         src={resolveImage(blog, index + 2)}
                         alt={blog.title}
@@ -270,7 +270,7 @@ export default async function Home() {
                         className="object-cover transition duration-500 group-hover:scale-105"
                       />
                     </div>
-                    <div className="flex flex-1 flex-col justify-between py-0.5">
+                    <div className="flex flex-1 flex-col justify-between py-0.5 min-w-0">
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
                           {getCategories(blog).map((cat, ci) => (
@@ -286,14 +286,14 @@ export default async function Home() {
                           {stripHtml(blog.content).substring(0, 130)}…
                         </p>
                       </div>
-                      <div className="mt-3 flex items-center justify-between text-xs text-[#7B7F84]">
+                      <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[#7B7F84]">
                         <div className="flex items-center gap-2">
                           <AuthorAvatar author={blog.author} />
                           <span className="font-semibold text-[#334155]">{blog.author?.name || 'Admin'}</span>
                           <span>·</span>
                           <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 ml-auto">
                           <span className="flex items-center gap-1">
                             <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             {getReadTime(blog.content)} min
@@ -320,7 +320,7 @@ export default async function Home() {
           </div>
 
           {/* Sidebar */}
-          <aside className="space-y-6">
+          <aside className="hidden xl:block space-y-6">
 
             {/* Popular Posts */}
             {popularBlogs.length > 0 && (
