@@ -108,8 +108,6 @@
     max-width: 1140px;
     padding-left: 1rem;
     padding-right: 1rem;
-    overflow-wrap: break-word;
-    word-break: break-word;
   }
 
   @media (min-width: 640px) {
@@ -292,6 +290,12 @@
   .tiptap {
     overflow-wrap: break-word;
     word-break: break-word;
+    min-width: 0;
+  }
+
+  .content-html > *,
+  .tiptap > * {
+    max-width: 100%;
   }
 
   .content-html h1,
@@ -363,9 +367,30 @@
   .content-html img,
   .tiptap img {
     width: 100%;
+    max-width: 100%;
     height: auto;
     border-radius: 0.75rem;
     margin: 1rem 0;
+  }
+
+  .content-html table,
+  .tiptap table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  .content-html iframe,
+  .content-html video,
+  .content-html embed,
+  .content-html object,
+  .tiptap iframe,
+  .tiptap video,
+  .tiptap embed,
+  .tiptap object {
+    max-width: 100%;
   }
 
   .content-html blockquote {

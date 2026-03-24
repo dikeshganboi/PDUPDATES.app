@@ -91,7 +91,7 @@ export default async function BlogDetailPage({ params }) {
   };
 
   return (
-    <article className="container-shell max-w-5xl py-10 md:py-14">
+    <article className="container-shell max-w-5xl overflow-x-clip py-6 md:py-14">
       <ReadingProgressBar />
       <script
         type="application/ld+json"
@@ -101,7 +101,7 @@ export default async function BlogDetailPage({ params }) {
       <Breadcrumb items={breadcrumbItems} />
 
       {/* Article Header */}
-      <header className="mb-8 rounded-xl bg-white p-6 shadow-[0_0_4px_#cfcfcf] md:p-8" style={{ borderBottom: '3px solid #3858F6' }}>
+      <header className="mb-8 overflow-hidden rounded-xl bg-white p-4 shadow-[0_0_4px_#cfcfcf] sm:p-6 md:p-8" style={{ borderBottom: '3px solid #3858F6' }}>
         <div className="flex flex-wrap items-center gap-3">
           {(Array.isArray(blog.category) ? blog.category : [blog.category].filter(Boolean)).slice(0, 3).map((cat, i) => {
             const colors = ['bg-[#FF3385]', 'bg-[#3858F6]', 'bg-[#FFAF25]'];
@@ -117,7 +117,7 @@ export default async function BlogDetailPage({ params }) {
           <span className="text-xs font-bold text-[#7B7F84]">⏱️ {readingTime} min read</span>
         </div>
 
-        <h1 className="mt-5 text-3xl font-extrabold leading-tight text-[#111827] md:text-[42px] md:leading-[1.15]">
+        <h1 className="mt-5 text-2xl font-extrabold leading-tight text-[#111827] sm:text-3xl md:text-[42px] md:leading-[1.15]">
           {blog.title}
         </h1>
 
@@ -160,14 +160,14 @@ export default async function BlogDetailPage({ params }) {
       {/* Article Content */}
       <SafeHtml
         html={blog.content}
-        className="content-html mb-8 rounded-xl bg-white p-6 shadow-[0_0_4px_#cfcfcf] md:p-8 prose prose-lg max-w-none prose-headings:text-[#111827] prose-headings:font-extrabold prose-p:text-[#334155] prose-a:text-[#3858F6] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl"
+        className="content-html mb-8 overflow-hidden rounded-xl bg-white p-4 shadow-[0_0_4px_#cfcfcf] sm:p-6 md:p-8 prose prose-base sm:prose-lg max-w-none prose-headings:text-[#111827] prose-headings:font-extrabold prose-p:text-[#334155] prose-a:text-[#3858F6] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl"
       />
 
       <div className="mb-8 h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
       {/* Tags Section */}
       {!!blog.tags?.length && (
-        <section className="mb-8 rounded-xl bg-white p-6 shadow-[0_0_4px_#cfcfcf]" style={{ borderBottom: '3px solid #3858F6' }}>
+        <section className="mb-8 overflow-hidden rounded-xl bg-white p-4 shadow-[0_0_4px_#cfcfcf] sm:p-6" style={{ borderBottom: '3px solid #3858F6' }}>
           <h2 className="mb-4 text-sm font-extrabold uppercase tracking-wider text-[#111827]">Related Topics</h2>
           <div className="flex flex-wrap gap-2">
             {blog.tags.map((tag) => (
@@ -185,7 +185,7 @@ export default async function BlogDetailPage({ params }) {
 
       {/* Author Card */}
       {blog.author && (
-        <section className="mb-8 rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-[0_0_4px_#cfcfcf] md:p-8">
+        <section className="mb-8 overflow-hidden rounded-2xl border border-gray-100 bg-white p-4 text-center shadow-[0_0_4px_#cfcfcf] sm:p-6 md:p-8">
           {blog.author.avatar ? (
             <Image
               src={blog.author.avatar}
