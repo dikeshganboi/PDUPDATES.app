@@ -272,16 +272,21 @@ const Navbar = () => {
           </form>
 
           {/* Right actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 md:gap-3">
             {/* Icon buttons */}
             <Link href="/blog" className="hidden h-10 w-10 items-center justify-center rounded-full bg-[#F8F8F8] text-[#334155] transition hover:bg-gray-200 md:flex">
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
             </Link>
 
             {!user ? (
-              <Link href="/login" className="hidden items-center rounded-full bg-[#3858F6] px-5 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-black md:inline-flex">
-                Sign in
-              </Link>
+              <div className="hidden items-center gap-2 md:flex">
+                <Link href="/login" className="inline-flex items-center rounded-full border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-[#111827] transition hover:border-[#3858F6] hover:text-[#3858F6]">
+                  Sign in
+                </Link>
+                <Link href="/register" className="inline-flex items-center rounded-full bg-[#3858F6] px-5 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-black">
+                  Create account
+                </Link>
+              </div>
             ) : (
               <div className="relative" ref={menuRef}>
                 <button
@@ -388,15 +393,6 @@ const Navbar = () => {
             </div>
           </form>
 
-          {/* Auth on dark bar */}
-          <div className="hidden items-center gap-3 md:flex">
-            {!user && (
-              <Link href="/login" className="text-[13px] font-semibold text-white/80 transition hover:text-white">Login</Link>
-            )}
-            {!user && (
-              <Link href="/register" className="rounded-full bg-[#3858F6] px-4 py-2 text-[13px] font-bold text-white transition hover:bg-white hover:text-[#111827]">Register</Link>
-            )}
-          </div>
         </div>
       </div>
 
