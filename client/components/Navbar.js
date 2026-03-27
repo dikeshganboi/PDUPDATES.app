@@ -206,10 +206,7 @@ const Navbar = () => {
             <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#3858F6] text-lg font-black text-white shadow-lg shadow-[#3858F6]/25">
               PD
             </span>
-            <div className="leading-none">
-              <p className="text-xl font-extrabold tracking-tight text-[#111827]">PD Updates</p>
-              <span className="text-[11px] font-medium text-[#7B7F84]">by Priyaa</span>
-            </div>
+            <p className="text-xl font-extrabold tracking-tight text-[#111827]">PD Updates</p>
           </Link>
 
           {/* Search bar – desktop with autocomplete */}
@@ -414,10 +411,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
           <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2.5">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#3858F6] text-sm font-black text-white">PD</span>
-            <div className="leading-none">
-              <p className="text-base font-extrabold text-[#111827]">PD Updates</p>
-              <span className="text-[10px] font-medium text-[#7B7F84]">by Priyaa</span>
-            </div>
+            <p className="text-base font-extrabold text-[#111827]">PD Updates</p>
           </Link>
           {user && (
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#3858F6] text-xs font-bold text-white">

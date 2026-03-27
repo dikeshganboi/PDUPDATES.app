@@ -20,10 +20,7 @@ const Footer = () => {
                 <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#3858F6] text-lg font-black text-white">
                   PD
                 </span>
-                <div className="leading-none">
-                  <p className="text-xl font-extrabold text-white">PD Updates</p>
-                  <span className="text-[11px] font-medium text-gray-500">by Priyaa</span>
-                </div>
+                <p className="text-xl font-extrabold text-white">PD Updates</p>
               </div>
               <p className="mt-5 max-w-[280px] text-sm leading-relaxed text-gray-500">
                 Your go-to source for the latest jobs, deals &amp; career updates. Stay updated. Stay ahead.
