@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { getAllBlogs } from '../lib/blogApi';
+import HeroCarousel from '../components/HeroCarousel';
 
 const fallbackImages = [
   'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
@@ -58,9 +59,21 @@ export default async function Home() {
   const data = await getAllBlogs();
   const allBlogs = data?.blogs || [];
 
-  const heroBlog = allBlogs[0];
-  const featuredBlogs = allBlogs.slice(1, 4);
-  const latestBlogs = allBlogs.slice(4, 13);
+  const heroSlides = allBlogs.slice(0, 4).map((blog, index) => ({
+    ...blog,
+    image: resolveImage(blog, index),
+    excerpt: `${stripHtml(blog.content).substring(0, 190)}${stripHtml(blog.content).length > 190 ? '...' : ''}`,
+    readTime: getReadTime(blog.content),
+    categories: getCategories(blog),
+    publishedAt: new Date(blog.createdAt).toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    }),
+    views: blog.views || 0,
+  }));
+  const featuredBlogs = allBlogs.slice(heroSlides.length, heroSlides.length + 3);
+  const latestBlogs = allBlogs.slice(heroSlides.length + 3, heroSlides.length + 12);
 
   // Popular posts sorted by views for sidebar
   const popularBlogs = [...allBlogs]
@@ -83,61 +96,8 @@ export default async function Home() {
     <div className="pb-20">
 
       {/* ── Hero ────────────────────────────────────────── */}
-      {heroBlog ? (
-        <section className="relative">
-          <div className="relative h-[440px] overflow-hidden md:h-[520px]">
-            <Image
-              src={resolveImage(heroBlog, 0)}
-              alt={heroBlog.title}
-              fill
-              sizes="100vw"
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/5" />
-            <div className="absolute inset-0 flex items-end">
-              <div className="container-shell pb-10 md:pb-14">
-                <div className="flex flex-wrap items-center gap-2">
-                  {getCategories(heroBlog).map((cat, i) => (
-                    <Link key={cat} href={`/blog?category=${encodeURIComponent(cat)}`} className={`inline-block rounded-md px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider transition hover:opacity-80 ${badgeColors[i % badgeColors.length]}`}>
-                      {cat}
-                    </Link>
-                  ))}
-                  <span className="ml-1 flex items-center gap-1 text-xs text-white/60">
-                    <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    {getReadTime(heroBlog.content)} min read
-                  </span>
-                </div>
-                <h1 className="mt-4 max-w-2xl text-3xl font-extrabold leading-tight text-white md:text-[42px] md:leading-[1.15]">
-                  <Link href={`/blog/${heroBlog.slug}`} className="transition hover:text-[#3858F6]">
-                    {heroBlog.title}
-                  </Link>
-                </h1>
-                <p className="mt-3 line-clamp-2 max-w-xl text-sm leading-relaxed text-white/70 md:text-[15px]">
-                  {stripHtml(heroBlog.content).substring(0, 160)}…
-                </p>
-                <div className="mt-5 flex items-center gap-3 text-sm text-white/80">
-                  <AuthorAvatar author={heroBlog.author} size="lg" />
-                  <div className="leading-tight">
-                    <span className="font-semibold text-white">{heroBlog.author?.name || 'Admin'}</span>
-                    <div className="flex items-center gap-2 text-xs text-white/50">
-                      <span>{new Date(heroBlog.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-                      {heroBlog.views > 0 && (
-                        <>
-                          <span>·</span>
-                          <span className="flex items-center gap-1">
-                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                            {heroBlog.views}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+      {heroSlides.length ? (
+        <HeroCarousel slides={heroSlides} />
       ) : (
         <section className="container-shell pt-10">
           <div className="flex h-[300px] items-center justify-center rounded-xl border border-gray-200 bg-[#F8F8F8] text-gray-400">
